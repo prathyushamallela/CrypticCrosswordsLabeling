@@ -1,1 +1,1 @@
-from transformers import T5tokienizer, T5ForConditionalGeneration
+from transformers import T5Tokenizer, T5ForConditionalGeneration
