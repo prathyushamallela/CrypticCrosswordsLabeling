@@ -8,7 +8,7 @@ class pre_trained_T5Tokenizer():
     def __init__(self,t5_type):
         self.T5tokenizer = T5Tokenizer.from_pretrained(t5_type)
 
-    ## 'List' is list of string
+    ## 'Input' is list of string
     def tokenize(self,input):
         if type(input) == str:
             input = [input] 
