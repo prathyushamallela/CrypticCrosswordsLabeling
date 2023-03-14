@@ -1,6 +1,6 @@
 from config.Classes import clue_type_classes
 from transformers import T5Config, T5Tokenizer, T5ForConditionalGeneration
-from transformers.adapters import T5AdapterModel 
+from transformers.adapters import T5AdapterModel, PrefixTuningConfig 
 import torch
 
 class pre_trained_T5Tokenizer():
@@ -13,6 +13,9 @@ class pre_trained_T5Tokenizer():
         if type(input) == str:
             input = [input] 
         return self.T5tokenizer(input,return_tensors = 'pt',padding = True).input_ids
+    
+    def decode(self,input):
+        return self.T5tokenizer.batch_decode(input,skip_special_tokens=True)
 
 class BiLSTMClassifier(torch.nn.Module):
 
@@ -31,30 +34,49 @@ class BiLSTMClassifier(torch.nn.Module):
         output = torch.argmax(output,dim = 1, keepdim = True)
         return output
     
-class pre_trained_T5model(torch.nn.Module):
+class T5model(torch.nn.Module):
 
-    def __init__(self,t5_type):
+    def __init__(self,t5_type,classes):
         super().__init__()
         self.model = T5ForConditionalGeneration.from_pretrained(t5_type)
+        ## Freeze T5 model
+        for p in self.model.parameters():
+            p.requires_grad = False
+        for i in classes:
+            self.add_adapter(i,PrefixTuningConfig(flat = False, prefix_length = 30))
 
-class T5Adapter():
-
-    def __init__(self,T5model):
-        self.T5model = T5model.model
-        self.T5model.add_adapter('test')
+    def forward(self,x,clue_type):
+        self.activate_adapter(clue_type)
+        output = self.model.generate(x)
+        return output
     
-class CrypticCrosswordSolver():
+    def add_adapter(self,task_name,config):
+        self.model.add_adapter(task_name,config)
 
-    def __init__(self,classifier):
-        self.classifier = classifier
+    def activate_adapter(self,task_name):
+        self.model.set_active_adapters(task_name)
+    
+class CrypticCrosswordSolver(torch.nn.Module):
+
+    def __init__(self,T5_type, classes,classifier):
+        super().__init__()
+        self.tokenizer = pre_trained_T5Tokenizer(T5_type)
+        self.classifier =  classifier
+        self.t5 = T5model(T5_type,classes)
+        self.classes = classes
+
+    def forward(self,x):
+        output = self.tokenizer.tokenize(x)
+        clue_type = self.classifier(output)
+        idx =  clue_type.squeeze().tolist()[0]
+        clue_type = self.classes[idx]
+        output = self.t5(output,clue_type)
+        output = self.tokenizer.decode(output)
+        return output
 
 T5_type = "t5-small"
 
 mock_input = ["This is a mock data, I am testing.","Another mock data sentence, also for testing","Another one for testing"]
 
-tokenizer = pre_trained_T5Tokenizer(T5_type)
-classifer = BiLSTMClassifier(T5_type,len(clue_type_classes))
-
-input = tokenizer.tokenize(mock_input)
-output = classifer(input)
-print(output.shape)
+solver = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes)))
+output = solver(mock_input)
