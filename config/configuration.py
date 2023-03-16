@@ -16,3 +16,6 @@ adapter_config = PrefixTuningConfig(flat = False, prefix_length = 30)
 adapter_arguments = AdapterArguments(train_adapter = True,adapter_config =adapter_config)
 ## Refer to https://huggingface.co/docs/transformers/main_classes/trainer#transformers.TrainingArguments
 training_arguments = TrainingArguments(output_dir= save_file_path,do_train = True, do_eval = True)
+
+max_train_samples = 500
+max_eval_samples = 500

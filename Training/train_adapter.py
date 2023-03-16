@@ -1,6 +1,30 @@
 from Models import T5modelWithAdapter, pre_trained_T5Tokenizer
-from config.configuration import T5_type, clue_type_classes,adapter_arguments, training_arguments
+from config.configuration import T5_type, clue_type_classes,adapter_arguments, training_arguments, max_train_samples, max_eval_samples
 from transformers.adapters import AdapterTrainer,setup_adapter_training
+from transformers import default_data_collator
+from transformers.trainer_utils import get_last_checkpoint
+import evaluate 
+import os
+import math
+
+## Initialization
+T5Adapter = T5modelWithAdapter(T5_type,clue_type_classes)
+tokenizer = pre_trained_T5Tokenizer(T5_type)
+train_dataset = None
+eval_dataset = None
+metric = evaluate.load("accuracy")
+
+# Detecting last checkpoint.
+last_checkpoint = None
+if os.path.isdir(training_arguments.output_dir) and training_arguments.do_train and not training_arguments.overwrite_output_dir:
+        last_checkpoint = get_last_checkpoint(training_arguments.output_dir)
+        if last_checkpoint is None and len(os.listdir(training_arguments.output_dir)) > 0:
+                raise ValueError(
+                f"Output directory ({training_arguments.output_dir}) already exists and is not empty. "
+                "Use --overwrite_output_dir to overcome."
+                )
+        elif last_checkpoint is not None and training_arguments.resume_from_checkpoint is None:
+                print("Checkpoint detected. To avoid this behavior, change the `--output_dir` or add `--overwrite_output_dir` to train from scratch.")
 
 def compute_metrics(eval_preds):
         preds, labels = eval_preds
@@ -10,11 +34,12 @@ def compute_metrics(eval_preds):
         preds = preds[:, :-1].reshape(-1)
         return metric.compute(predictions=preds, references=labels)
 
-## Initialization
-T5Adapter = T5modelWithAdapter(T5_type,clue_type_classes)
-tokenizer = pre_trained_T5Tokenizer(T5_type)
-train_dataset = None
-eval_dataset = None
+def preprocess_logits_for_metrics(logits, labels):
+        if isinstance(logits, tuple):
+                # Depending on the model and config, logits may contain extra tensors,
+                # like past_key_values, but logits always come first
+                logits = logits[0]
+        return logits.argmax(dim=-1)
 
 ## Preparation and initialize trainer
 setup_adapter_training(T5Adapter,adapter_arguments,clue_type_classes[0])
@@ -26,10 +51,8 @@ trainer = AdapterTrainer(
         tokenizer=tokenizer,
         # Data collator will default to DataCollatorWithPadding, so we change it.
         data_collator=default_data_collator,
-        compute_metrics=compute_metrics if training_arguments.do_eval and not is_torch_tpu_available() else None,
-        preprocess_logits_for_metrics=preprocess_logits_for_metrics
-        if training_arguments.do_eval and not is_torch_tpu_available()
-        else None
+        compute_metrics=compute_metrics if training_arguments.do_eval else None,
+        preprocess_logits_for_metrics=preprocess_logits_for_metrics if training_arguments.do_eval else None
 )
 
 ## Training
@@ -45,9 +68,6 @@ if training_arguments.do_train:
 
         metrics = train_result.metrics
 
-        max_train_samples = (
-                data_args.max_train_samples if data_args.max_train_samples is not None else len(train_dataset)
-        )
         metrics["train_samples"] = min(max_train_samples, len(train_dataset))
 
         trainer.log_metrics("train", metrics)
@@ -55,12 +75,11 @@ if training_arguments.do_train:
         trainer.save_state()
 
 # Evaluation
-if training_args.do_eval:
-        logger.info("*** Evaluate ***")
+if training_arguments.do_eval:
+        print("*** Evaluate ***")
 
         metrics = trainer.evaluate()
 
-        max_eval_samples = data_args.max_eval_samples if data_args.max_eval_samples is not None else len(eval_dataset)
         metrics["eval_samples"] = min(max_eval_samples, len(eval_dataset))
         try:
                 perplexity = math.exp(metrics["eval_loss"])
@@ -70,12 +89,3 @@ if training_args.do_eval:
 
         trainer.log_metrics("eval", metrics)
         trainer.save_metrics("eval", metrics)
-
-kwargs = {"finetuned_from": model_args.model_name_or_path, "tasks": "text-generation"}
-if data_args.dataset_name is not None:
-        kwargs["dataset_tags"] = data_args.dataset_name
-        if data_args.dataset_config_name is not None:
-                kwargs["dataset_args"] = data_args.dataset_config_name
-                kwargs["dataset"] = f"{data_args.dataset_name} {data_args.dataset_config_name}"
-        else:
-                kwargs["dataset"] = data_args.dataset_name
