@@ -1,6 +1,6 @@
-from config.configuration import clue_type_classes,T5_type,mock_input
-from transformers import T5Config, T5Tokenizer, T5ForConditionalGeneration
-from transformers.adapters import T5AdapterModel, PrefixTuningConfig 
+from config.configuration import clue_type_classes,T5_type,adapter_config,mock_input
+from transformers import T5ForConditionalGeneration, T5Config, T5Tokenizer
+from transformers.adapters import T5AdapterModel
 import torch
 
 ## Vocabulary for class 
@@ -62,27 +62,20 @@ class BiLSTMClassifier(torch.nn.Module):
         output = torch.argmax(output,dim = 1, keepdim = True)
         return output
     
-class T5Adaptermodel(torch.nn.Module):
+class T5modelWithAdapter(torch.nn.Module):
 
     def __init__(self,t5_type,classes):
         super().__init__()
-        self.model = T5ForConditionalGeneration.from_pretrained(t5_type)
-        ## Freeze T5 model
-        for p in self.model.parameters():
-            p.requires_grad = False
+        self.model = T5AdapterModel.from_pretrained(t5_type)
+        self.model.freeze_model(True)
         for i in classes:
-            self.add_adapter(i,PrefixTuningConfig(flat = False, prefix_length = 30))
+            self.model.add_adapter(i,adapter_config)
+            self.model.add_seq2seq_lm_head(i)
 
     def forward(self,x,clue_type):
-        self.activate_adapter(clue_type)
+        self.model.set_active_adapters(clue_type)
         output = self.model.generate(x)
         return output
-    
-    def add_adapter(self,task_name,config):
-        self.model.add_adapter(task_name,config)
-
-    def activate_adapter(self,task_name):
-        self.model.set_active_adapters(task_name)
     
 class CrypticCrosswordSolver(torch.nn.Module):
 
@@ -90,7 +83,7 @@ class CrypticCrosswordSolver(torch.nn.Module):
         super().__init__()
         self.tokenizer = pre_trained_T5Tokenizer(T5_type)
         self.classifier =  classifier
-        self.t5 = T5Adaptermodel(T5_type,classes)
+        self.t5 = T5modelWithAdapter(T5_type,classes)
         self.classes = classes
 
     def forward(self,x):
