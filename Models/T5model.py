@@ -74,6 +74,7 @@ class T5modelWithAdapter(torch.nn.Module):
 
     def forward(self,x,clue_type):
         self.model.set_active_adapters(clue_type)
+        ## For autoregressive inference instead of using decoder ids
         output = self.model.generate(x)
         return output
     
