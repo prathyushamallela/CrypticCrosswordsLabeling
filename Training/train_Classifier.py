@@ -45,7 +45,6 @@ for i in range(cur_epoch,epoch):
     crit = torch.nn.CrossEntropyLoss()
     for x,y in enumerate(val_dataloader):
         y_pred = classifier(x)
-        y = y.view(-1)
         loss = crit(y_pred, y)
         val_total += len(y)
         val_correct += y_pred.eq(y).sum()
