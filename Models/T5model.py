@@ -97,6 +97,6 @@ class CrypticCrosswordSolver(torch.nn.Module):
 
 
 
-solver = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes)))
-output = solver(mock_input)
-print(output)
+# solver = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes)))
+# output = solver(mock_input)
+# print(output)
