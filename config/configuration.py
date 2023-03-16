@@ -1,5 +1,6 @@
 import pathlib as Path
 from transformers.adapters import PrefixTuningConfig 
+from transformers.adapters.training import AdapterArguments
 
 clue_type_classes = ["anagram","hidden-word","container","reversal","deletion","homophone","double-def","charade","unclassified"]
 
@@ -10,3 +11,4 @@ mock_input = ["translate english to mandarin: This is my data","This is a mock d
 
 save_file_path = Path.Path().cwd() / 'Model_saveflies'
 adapter_config = PrefixTuningConfig(flat = False, prefix_length = 30)
+adapter_arguments = AdapterArguments(train_adapter = True,adapter_config =adapter_config)
