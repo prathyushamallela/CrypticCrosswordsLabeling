@@ -36,7 +36,8 @@ class pre_trained_T5Tokenizer():
     def tokenize(self,input):
         if type(input) == str:
             input = [input] 
-        return self.T5tokenizer(input,return_tensors = 'pt',padding = True).input_ids
+        ids = self.T5tokenizer(input,return_tensors = 'pt',padding = True)
+        return ids.input_ids, ids.attention_mask
     
     def decode(self,input):
         return self.T5tokenizer.batch_decode(input,skip_special_tokens=True)
@@ -93,7 +94,7 @@ class CrypticCrosswordSolver(torch.nn.Module):
         self.classes = classes
 
     def forward(self,x):
-        output = self.tokenizer.tokenize(x)
+        output,attention_mask = self.tokenizer.tokenize(x)
         clue_type = self.classifier(output)
         idx =  clue_type.squeeze().tolist()[0]
         clue_type = self.classes[idx]
@@ -105,3 +106,4 @@ class CrypticCrosswordSolver(torch.nn.Module):
 
 solver = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes)))
 output = solver(mock_input)
+print(output)
