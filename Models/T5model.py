@@ -23,6 +23,12 @@ class Class_vocab():
 
     def get_class(self,idx):
         return self.idx2class[idx]
+    
+    def batch_get_idx(self,batch):
+        return [ self.get_idx(cl.item()) for cl in batch]
+
+    def batch_get_class(self,batch):
+        return [ self.get_class(idx.item()) for idx in batch]
 
 ## pre-trained T5 tokenizer
 ## Usage: from sentences to ids: tokens(id form) = tokenizer.tokenize(sentences)
@@ -72,10 +78,10 @@ class T5modelWithAdapter(torch.nn.Module):
             self.model.add_adapter(i,adapter_config)
             self.model.add_seq2seq_lm_head(i)
 
-    def forward(self,x,clue_type):
-        self.model.set_active_adapters(clue_type)
+    def forward(self,x,attention_mask,clue_type,topk = 1):
+        self.model.set_active_adapters(clue_type[0])
         ## For autoregressive inference instead of using decoder ids
-        output = self.model.generate(x)
+        output = self.model.generate(x, attention_mask =attention_mask,num_beams = topk, num_return_sequences = topk)
         return output
     
 class CrypticCrosswordSolver(torch.nn.Module):
@@ -85,19 +91,18 @@ class CrypticCrosswordSolver(torch.nn.Module):
         self.tokenizer = pre_trained_T5Tokenizer(T5_type)
         self.classifier =  classifier
         self.t5 = T5modelWithAdapter(T5_type,classes)
-        self.classes = classes
+        self.classes = Class_vocab(classes)
 
-    def forward(self,x):
+    def forward(self,x,topk = 1):
         output,attention_mask = self.tokenizer.tokenize(x)
         clue_type = self.classifier(output)
-        idx =  clue_type.squeeze().tolist()[0]
-        clue_type = self.classes[idx]
-        output = self.t5(output,clue_type)
+        clue_type = self.classes.batch_get_class(clue_type)
+        output = self.t5(output,attention_mask,clue_type,topk = topk )
         output = self.tokenizer.decode(output)
         return output
 
 
 
 # solver = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes)))
-# output = solver(mock_input)
+# output = solver(mock_input,topk = 10)
 # print(output)
