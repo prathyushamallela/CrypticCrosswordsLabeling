@@ -10,8 +10,6 @@ import math
 ## Initialization
 T5Adapter = T5modelWithAdapter(T5_type,clue_type_classes)
 tokenizer = pre_trained_T5Tokenizer(T5_type)
-train_dataset = None
-eval_dataset = None
 metric = evaluate.load("accuracy")
 
 # Detecting last checkpoint.
@@ -59,7 +57,7 @@ def prepare_trainer(model,train_dataset,eval_dataset,tokenizer,task_name):
         )
         return trainer
 
-def train(trainer):
+def train(trainer,train_dataset):
         ## Training    
         last_checkpoint = get_last_checkpoint()
         checkpoint = None
@@ -79,8 +77,9 @@ def train(trainer):
                 trainer.log_metrics("train", metrics)
                 trainer.save_metrics("train", metrics)
                 trainer.save_state()
+        return trainer
 
-def evaluate(trainer):
+def eval(trainer,eval_dataset):
         # Evaluation
         if training_arguments.do_eval:
                 print("*** Evaluate ***")
@@ -96,3 +95,12 @@ def evaluate(trainer):
 
                 trainer.log_metrics("eval", metrics)
                 trainer.save_metrics("eval", metrics)
+        return trainer
+
+
+for cl in clue_type_classes:
+        train_dataset = None
+        eval_dataset = None
+        trainer = prepare_trainer(T5Adapter,train_dataset,eval_dataset,tokenizer,cl)
+        trainer = train(trainer,train_dataset)
+        trainer = eval(trainer,eval_dataset)
