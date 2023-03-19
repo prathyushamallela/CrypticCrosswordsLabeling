@@ -14,7 +14,7 @@ class Class_vocab():
         self.idx2class = dict()
         count = 0
         for cl in classes:
-            self.class2idx[cl] = 0
+            self.class2idx[cl] = count
             self.idx2class[count] = cl
             count += 1
 

@@ -27,3 +27,5 @@ batch_size = 50
 
 max_train_samples = 500
 max_eval_samples = 500
+
+test_size = 0.2

@@ -72,6 +72,6 @@ def tokenize_for_classifier(data):
 def tokenize_for_adapter(data):
     data_class = json_data_class(data)
     output = tokenizer(data_class.get_clue(),return_tensors = 'pt',padding="max_length", truncation = True)
-    output['labels'] = tokenizer(data_class.get_answer(),return_tensors = 'pt',padding="max_length", truncation = True)
+    output['labels'] = tokenizer(data_class.get_answer(),return_tensors = 'pt',padding=True)['input_ids']
     output['type'] = cl_vocab.batch_get_idx(data_class.get_type())
     return output
