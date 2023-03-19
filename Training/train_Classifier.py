@@ -1,3 +1,7 @@
+import sys
+import pathlib
+sys.path.insert(0,str(pathlib.Path().cwd()))
+
 from Models.T5model import BiLSTMClassifier
 from config.configuration import T5_type,clue_type_classes, save_file_path, dev
 from utils.save_load_model import load_checkpoint,save_checkpoint
