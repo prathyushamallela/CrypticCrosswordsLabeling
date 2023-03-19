@@ -65,7 +65,6 @@ class BiLSTMClassifier(torch.nn.Module):
         output, (ht,ct) = self.bilstm(output)
         output = self.linear(ht.permute(1,0,2).reshape(ht.shape[1],-1))
         output = torch.nn.functional.softmax(output,dim = 1)
-        output = torch.argmax(output,dim = 1, keepdim = True)
         return output
     
 class T5modelWithAdapter(torch.nn.Module):
