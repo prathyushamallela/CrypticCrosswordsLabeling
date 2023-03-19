@@ -3,6 +3,8 @@ from config.configuration import T5_type,clue_type_classes, save_file_path, dev
 from utils.save_load_model import load_checkpoint,save_checkpoint
 import torch
 from DataLoader.load_DataLoader_classifier import train_dataloader, val_dataloader
+import sys
+sys.path.insert(0,'..')
 
 ## Initialization
 classifier = BiLSTMClassifier(T5_type,len(clue_type_classes)).to(dev)
