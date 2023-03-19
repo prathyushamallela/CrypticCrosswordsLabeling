@@ -24,6 +24,3 @@ batch_size = 50
 
 max_train_samples = 500
 max_eval_samples = 500
-
-max_input_length = 512
-max_output_length = 128
