@@ -95,6 +95,7 @@ class CrypticCrosswordSolver(torch.nn.Module):
     def forward(self,x,topk = 1):
         output,attention_mask = self.tokenizer.tokenize(x)
         clue_type = self.classifier(output)
+        clue_type  = torch.argmax(clue_type ,dim = 1, keepdim = True)
         clue_type = self.classes.batch_get_class(clue_type)
         output = self.t5(output,attention_mask,clue_type,topk = topk )
         output = self.tokenizer.decode(output)

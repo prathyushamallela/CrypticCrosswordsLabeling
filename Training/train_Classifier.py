@@ -36,6 +36,7 @@ for i in range(cur_epoch,epoch):
         optimizer.zero_grad()
         y_pred = classifier(data)
         loss = criterion(y_pred,y)
+        y_pred  = torch.argmax(y_pred ,dim = 1, keepdim = True)
         train_total += len(y)
         train_correct += y_pred.eq(y).sum()
         train_sum_loss += loss.item()
