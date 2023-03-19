@@ -23,7 +23,7 @@ accuracy = 0
 ## Load checkpoint if there is one
 filepath = save_file_path / 'classifier.pt'
 if not save_file_path.exists():
-    os.makedir(save_file_path)
+    os.mkdir(save_file_path)
 if filepath.exists():
     classifier, optimizer,loss, accuracy,cur_epoch = load_checkpoint(filepath,classifier,None)
 
