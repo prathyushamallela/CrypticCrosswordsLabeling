@@ -54,6 +54,7 @@ for i in range(cur_epoch,epoch):
         y = x['labels'].to(dev)
         y_pred = classifier(data)
         loss = crit(y_pred, y)
+        y_pred  = torch.argmax(y_pred ,dim = 1, keepdim = True)
         val_total += len(y)
         val_correct += y_pred.eq(y).sum()
         val_sum_loss += loss.item()
