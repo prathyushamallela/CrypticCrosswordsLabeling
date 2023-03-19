@@ -25,7 +25,7 @@ class Class_vocab():
         return self.idx2class[idx]
     
     def batch_get_idx(self,batch):
-        return [ self.get_idx(cl.item()) for cl in batch]
+        return [ self.get_idx(cl) for cl in batch]
 
     def batch_get_class(self,batch):
         return [ self.get_class(idx.item()) for idx in batch]
