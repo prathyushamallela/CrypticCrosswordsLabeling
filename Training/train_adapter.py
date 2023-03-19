@@ -2,7 +2,7 @@ import sys
 import pathlib
 sys.path.insert(0,str(pathlib.Path().cwd()))
 
-from Models import T5modelWithAdapter, pre_trained_T5Tokenizer
+from Models.T5model import T5modelWithAdapter, pre_trained_T5Tokenizer
 from config.configuration import T5_type, clue_type_classes,adapter_arguments, training_arguments, max_train_samples, max_eval_samples
 from transformers.adapters import AdapterTrainer,setup_adapter_training
 from transformers import default_data_collator
