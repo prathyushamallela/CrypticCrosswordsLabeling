@@ -27,7 +27,7 @@ if not save_file_path.exists():
 if filepath.exists():
     classifier, optimizer,loss, accuracy,cur_epoch = load_checkpoint(filepath,classifier,None)
 
-for i in range(cur_epoch,epoch):
+for j in range(cur_epoch,epoch):
     ## Training Section
     classifier.train()
     train_correct = 0
@@ -64,6 +64,6 @@ for i in range(cur_epoch,epoch):
 
 
     if accuracy< val_correct/val_total:
-        save_checkpoint(filepath,classifier,optimizer,loss,val_correct/val_total,i)
-    print("epoch %d train loss %.3f, train acc %.3f, val loss %.3f, val accuracy %.3f" % (i, train_sum_loss/train_total, train_correct/train_total, val_sum_loss/val_total, val_correct/val_total))
+        save_checkpoint(filepath,classifier,optimizer,loss,val_correct/val_total,j)
+    print("epoch %d train loss %.3f, train acc %.3f, val loss %.3f, val accuracy %.3f" % (j, train_sum_loss/train_total, train_correct/train_total, val_sum_loss/val_total, val_correct/val_total))
     
