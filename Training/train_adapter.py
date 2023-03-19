@@ -103,9 +103,13 @@ def eval(trainer,eval_dataset):
         return trainer
 
 
-for cl in clue_type_classes:
-        train_dataset = None
-        eval_dataset = None
-        trainer = prepare_trainer(T5Adapter,train_dataset,eval_dataset,tokenizer,cl)
-        trainer = train(trainer,train_dataset)
-        trainer = eval(trainer,eval_dataset)
+# for cl in clue_type_classes:
+#         train_dataset = None
+#         eval_dataset = None
+#         trainer = prepare_trainer(T5Adapter,train_dataset,eval_dataset,tokenizer,cl)
+#         trainer = train(trainer,train_dataset)
+#         trainer = eval(trainer,eval_dataset)
+
+trainer = prepare_trainer(T5Adapter,anagram_train_dataset,anagram_eval_dataset,tokenizer,"anagram")
+trainer = train(trainer,anagram_train_dataset)
+trainer = eval(trainer,anagram_eval_dataset)
