@@ -75,4 +75,3 @@ def tokenize_for_adapter(data):
     output['label'] = tokenizer(data_class.get_answer(),return_tensors = 'pt',padding="max_length", truncation = True)
     output['type'] = cl_vocab.batch_get_idx(data_class.get_type())
     return output
-
