@@ -30,12 +30,12 @@ for i in range(cur_epoch,epoch):
     train_correct = 0
     train_total = 0
     train_sum_loss = 0.0
-    for x,y in enumerate(train_dataloader):
+    for i,x in enumerate(train_dataloader):
         optimizer.zero_grad()
-        y_pred = classifier(torch.Tensor(x))
-        loss = criterion(y_pred,y)
-        train_total += len(y)
-        train_correct += y_pred.eq(y).sum()
+        y_pred = classifier(torch.Tensor(x.input_ids))
+        loss = criterion(y_pred,x.labels)
+        train_total += len(x.labels)
+        train_correct += y_pred.eq(x.labels).sum()
         train_sum_loss += loss.item()
         loss.backward()
         optimizer.step()
