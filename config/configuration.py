@@ -1,6 +1,9 @@
 import pathlib as Path
 from transformers import TrainingArguments
 from transformers.adapters import PrefixTuningConfig, AdapterArguments 
+import torch
+
+dev = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 clue_type_classes = ["anagram","hidden-word","container","reversal","deletion","homophone","double-def","charade","unclassified"]
 
