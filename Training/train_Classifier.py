@@ -1,10 +1,11 @@
 from Models.T5model import BiLSTMClassifier
-from config.configuration import T5_type,clue_type_classes, save_file_path
+from config.configuration import T5_type,clue_type_classes, save_file_path, dev
 from utils.save_load_model import load_checkpoint,save_checkpoint
 import torch
+from DataLoader.load_DataLoader_classifier import train_dataloader, val_dataloader
 
 ## Initialization
-classifier = BiLSTMClassifier(T5_type,len(clue_type_classes))
+classifier = BiLSTMClassifier(T5_type,len(clue_type_classes)).to(dev)
 parameters = filter(lambda p: p.requires_grad, classifier.parameters())
 lr = 0.001
 optimizer = torch.optim.Adam(parameters, lr=lr, weight_decay=0.0001)
@@ -12,8 +13,6 @@ loss = 0
 cur_epoch = 0
 epoch = 10
 criterion = torch.nn.CrossEntrophyLoss()
-train_dataloader = None
-val_dataloader = None
 accuracy = 0
 
 ## Load checkpoint if there is one
