@@ -7,6 +7,7 @@ from config.configuration import T5_type,clue_type_classes, save_file_path, dev
 from utils.save_load_model import load_checkpoint,save_checkpoint
 import torch
 from DataLoader.load_DataLoader_classifier import train_dataloader, val_dataloader
+import os
 
 ## Initialization
 classifier = BiLSTMClassifier(T5_type,len(clue_type_classes)).to(dev)
@@ -21,6 +22,8 @@ accuracy = 0
 
 ## Load checkpoint if there is one
 filepath = save_file_path / 'classifier.pt'
+if not save_file_path.exists():
+    os.makedir(save_file_path)
 if filepath.exists():
     classifier, optimizer,loss, accuracy,cur_epoch = load_checkpoint(filepath,classifier,None)
 
