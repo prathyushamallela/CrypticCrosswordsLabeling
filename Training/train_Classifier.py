@@ -30,8 +30,8 @@ for i in range(cur_epoch,epoch):
     train_correct = 0
     train_total = 0
     train_sum_loss = 0.0
-    for i,x in enumerate(train_dataloader):
-        data = torch.stack(x['input_ids']).to(dev)
+    for i,x in enumerate(train_dataloader):       
+        data = torch.stack(x['input_ids']).permute(1,0).to(dev)
         y = x['labels'].to(dev)
         optimizer.zero_grad()
         y_pred = classifier(data)
