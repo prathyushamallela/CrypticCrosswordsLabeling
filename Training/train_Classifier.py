@@ -49,7 +49,7 @@ for i in range(cur_epoch,epoch):
     val_sum_loss = 0.0
     crit = torch.nn.CrossEntropyLoss()
     for i,x in enumerate(val_dataloader):        
-        data = torch.stack(x['input_ids']).to(dev)
+        data = torch.stack(x['input_ids']).permute(1,0).to(dev)
         y = x['labels'].to(dev)
         y_pred = classifier(data)
         loss = crit(y_pred, y)
