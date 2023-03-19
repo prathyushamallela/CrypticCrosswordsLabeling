@@ -10,6 +10,7 @@ All_T5_types = ['t5-small','t5-base','t5-large','t5-3b','t5-11b']
 mock_input = ["translate en to de: This is my data","This is a mock data, I am testing.","Another mock data sentence, also for testing","Another one for testing"]
 
 save_file_path = Path.Path().cwd() / 'Model_saveflies'
+data_file_path = Path.Path().cwd() / 'data'
 
 adapter_config = PrefixTuningConfig(flat = False, prefix_length = 30)
 ## Refer to https://docs.adapterhub.ml/classes/adapter_training.html#transformers.adapters.training.AdapterArguments
