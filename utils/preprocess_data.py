@@ -66,12 +66,12 @@ cl_vocab = Class_vocab(clue_type_classes)
 def tokenize_for_classifier(data):
     data_class = json_data_class(data)
     output = tokenizer(data_class.get_clue(),return_tensors = 'pt',padding="max_length", truncation = True)
-    output['label'] = cl_vocab.batch_get_idx(data_class.get_type())
+    output['labels'] = cl_vocab.batch_get_idx(data_class.get_type())
     return output
 
 def tokenize_for_adapter(data):
     data_class = json_data_class(data)
     output = tokenizer(data_class.get_clue(),return_tensors = 'pt',padding="max_length", truncation = True)
-    output['label'] = tokenizer(data_class.get_answer(),return_tensors = 'pt',padding="max_length", truncation = True)
+    output['labels'] = tokenizer(data_class.get_answer(),return_tensors = 'pt',padding="max_length", truncation = True)
     output['type'] = cl_vocab.batch_get_idx(data_class.get_type())
     return output

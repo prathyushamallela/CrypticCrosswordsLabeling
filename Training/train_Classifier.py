@@ -31,11 +31,13 @@ for i in range(cur_epoch,epoch):
     train_total = 0
     train_sum_loss = 0.0
     for i,x in enumerate(train_dataloader):
+        data = torch.stack(x['input_ids']).to(dev)
+        y = x['labels'].to(dev)
         optimizer.zero_grad()
-        y_pred = classifier(torch.stack(x['input_ids']).to(dev))
-        loss = criterion(y_pred,x['labels'])
-        train_total += len(x['labels'])
-        train_correct += y_pred.eq(x['labels']).sum()
+        y_pred = classifier(data)
+        loss = criterion(y_pred,y)
+        train_total += len(y)
+        train_correct += y_pred.eq(y).sum()
         train_sum_loss += loss.item()
         loss.backward()
         optimizer.step()
@@ -46,11 +48,13 @@ for i in range(cur_epoch,epoch):
     val_total = 0
     val_sum_loss = 0.0
     crit = torch.nn.CrossEntropyLoss()
-    for x,y in enumerate(val_dataloader):
-        y_pred = classifier(torch.stack(x['input_ids']).to(dev))
-        loss = crit(y_pred, x['labels'])
-        val_total += len(x['labels'])
-        val_correct += y_pred.eq(x['labels']).sum()
+    for i,x in enumerate(val_dataloader):        
+        data = torch.stack(x['input_ids']).to(dev)
+        y = x['labels'].to(dev)
+        y_pred = classifier(data)
+        loss = crit(y_pred, y)
+        val_total += len(y)
+        val_correct += y_pred.eq(y).sum()
         val_sum_loss += loss.item()
 
 
