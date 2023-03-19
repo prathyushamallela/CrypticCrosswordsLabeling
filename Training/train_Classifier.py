@@ -16,7 +16,7 @@ optimizer = torch.optim.Adam(parameters, lr=lr, weight_decay=0.0001)
 loss = 0
 cur_epoch = 0
 epoch = 10
-criterion = torch.nn.CrossEntrophyLoss()
+criterion = torch.nn.CrossEntropyLoss()
 accuracy = 0
 
 ## Load checkpoint if there is one
