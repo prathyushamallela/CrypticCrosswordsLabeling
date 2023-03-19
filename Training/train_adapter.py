@@ -1,3 +1,7 @@
+import sys
+import pathlib
+sys.path.insert(0,str(pathlib.Path().cwd()))
+
 from Models import T5modelWithAdapter, pre_trained_T5Tokenizer
 from config.configuration import T5_type, clue_type_classes,adapter_arguments, training_arguments, max_train_samples, max_eval_samples
 from transformers.adapters import AdapterTrainer,setup_adapter_training
@@ -6,6 +10,7 @@ from transformers.trainer_utils import get_last_checkpoint
 import evaluate 
 import os
 import math
+from DataLoader.load_DataLoader_adapter import anagram_train_dataset, anagram_eval_dataset,hidden_word_train_dataset, hidden_word_eval_dataset, container_train_dataset, container_eval_dataset,reversal_train_dataset,reversal_eval_dataset,deletion_train_dataset,deletion_eval_dataset ,homophone_train_dataset,homophone_eval_dataset,double_def_train_dataset,double_def_eval_dataset,charade_train_dataset,charade_eval_dataset,unclassified_train_dataset,unclassified_eval_dataset
 
 ## Initialization
 T5Adapter = T5modelWithAdapter(T5_type,clue_type_classes)
