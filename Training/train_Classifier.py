@@ -32,7 +32,7 @@ for i in range(cur_epoch,epoch):
     train_sum_loss = 0.0
     for x,y in enumerate(train_dataloader):
         optimizer.zero_grad()
-        y_pred = classifier(x)
+        y_pred = classifier(torch.Tensor(x))
         loss = criterion(y_pred,y)
         train_total += len(y)
         train_correct += y_pred.eq(y).sum()
