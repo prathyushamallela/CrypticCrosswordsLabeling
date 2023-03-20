@@ -14,7 +14,7 @@ from DataLoader.load_DataLoader_adapter import anagram_train_dataset, anagram_ev
 
 ## Initialization
 T5Adapter = T5modelWithAdapter(T5_type,clue_type_classes)
-tokenizer = pre_trained_T5Tokenizer(T5_type)
+tokenizer = pre_trained_T5Tokenizer(T5_type).T5tokenizer
 metric = evaluate.load("accuracy")
 
 # Detecting last checkpoint.
