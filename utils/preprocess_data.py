@@ -75,16 +75,3 @@ def tokenize_for_adapter(data):
     output['labels'] = tokenizer(data_class.get_answer(),return_tensors = 'pt',padding="max_length", truncation = True)['input_ids']
     output['type'] = cl_vocab.batch_get_idx(data_class.get_type())
     return output
-
-from datasets import load_dataset
-from config.configuration import data_file_path, batch_size
-from torch.utils.data import  DataLoader
-
-train_ds = load_dataset("json",data_files = str(data_file_path/"sample1679170166.779008.jsonl") , split = 'train[:80%]')
-val_ds = load_dataset("json",data_files = str(data_file_path/"sample1679170166.779008.jsonl") , split = 'train[80%:]')
-
-train_ds = train_ds.map(tokenize_for_classifier,batched= True)
-val_ds = val_ds.map(tokenize_for_classifier,batched= True)
-
-train_dataloader = DataLoader(train_ds,batch_size= batch_size, shuffle= True)
-val_dataloader = DataLoader(val_ds,batch_size= batch_size, shuffle= True)
