@@ -20,7 +20,7 @@ adapter_config = PrefixTuningConfig(flat = False, prefix_length = 30)
 ## Refer to https://docs.adapterhub.ml/classes/adapter_training.html#transformers.adapters.training.AdapterArguments
 adapter_arguments = AdapterArguments(train_adapter = True,adapter_config =adapter_config)
 ## Refer to https://huggingface.co/docs/transformers/main_classes/trainer#transformers.TrainingArguments
-training_arguments = TrainingArguments(output_dir= save_file_path,do_train = True, do_eval = True, evaluation_strategy="epoch")
+training_arguments = TrainingArguments(output_dir= save_file_path,do_train = True, do_eval = True, evaluation_strategy="epoch",overwrite_output_dir = True)
 
 batch_size = 50
 
