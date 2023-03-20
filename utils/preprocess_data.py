@@ -28,7 +28,7 @@ class data():
         return self.answer
     
     def get_type(self):
-        return max(self.scores, key = self.scores.get)
+        return self.predicted_cluetype
     
 class json_data_class():
     
