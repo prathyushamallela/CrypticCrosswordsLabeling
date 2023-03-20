@@ -152,6 +152,6 @@ trainer = train(trainer,charade_train_dataset)
 trainer = eval(trainer,charade_eval_dataset)
 
 ## unclassified
-trainer = prepare_trainer(T5Adapter.model,unclassified_train_dataset,unclassified_eval_dataset,tokenizer,"unclassified")
-trainer = train(trainer,unclassified_train_dataset)
-trainer = eval(trainer,unclassified_eval_dataset)
+# trainer = prepare_trainer(T5Adapter.model,unclassified_train_dataset,unclassified_eval_dataset,tokenizer,"unclassified")
+# trainer = train(trainer,unclassified_train_dataset)
+# trainer = eval(trainer,unclassified_eval_dataset)
