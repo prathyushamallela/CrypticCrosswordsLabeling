@@ -116,10 +116,10 @@ trainer = prepare_trainer(T5Adapter.model,anagram_train_dataset,anagram_eval_dat
 trainer = train(trainer,anagram_train_dataset)
 trainer = eval(trainer,anagram_eval_dataset)
 
-# ## Hidden-word
-# trainer = prepare_trainer(T5Adapter.model,hidden_word_train_dataset,hidden_word_eval_dataset,tokenizer,"hidden-word")
-# trainer = train(trainer,hidden_word_train_dataset)
-# trainer = eval(trainer,hidden_word_eval_dataset)
+## Hidden-word
+trainer = prepare_trainer(T5Adapter.model,hidden_word_train_dataset,hidden_word_eval_dataset,tokenizer,"hidden-word")
+trainer = train(trainer,hidden_word_train_dataset)
+trainer = eval(trainer,hidden_word_eval_dataset)
 
 ## container
 trainer = prepare_trainer(T5Adapter.model,container_train_dataset,container_eval_dataset,tokenizer,"container")
@@ -151,7 +151,7 @@ trainer = prepare_trainer(T5Adapter.model,charade_train_dataset,charade_eval_dat
 trainer = train(trainer,charade_train_dataset)
 trainer = eval(trainer,charade_eval_dataset)
 
-## unclassified
-# trainer = prepare_trainer(T5Adapter.model,unclassified_train_dataset,unclassified_eval_dataset,tokenizer,"unclassified")
-# trainer = train(trainer,unclassified_train_dataset)
-# trainer = eval(trainer,unclassified_eval_dataset)
+# unclassified
+trainer = prepare_trainer(T5Adapter.model,unclassified_train_dataset,unclassified_eval_dataset,tokenizer,"unclassified")
+trainer = train(trainer,unclassified_train_dataset)
+trainer = eval(trainer,unclassified_eval_dataset)
