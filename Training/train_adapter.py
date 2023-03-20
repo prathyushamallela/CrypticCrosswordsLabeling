@@ -116,42 +116,42 @@ trainer = prepare_trainer(T5Adapter.model,anagram_train_dataset,anagram_eval_dat
 trainer = train(trainer,anagram_train_dataset)
 trainer = eval(trainer,anagram_eval_dataset)
 
-## Hidden-word
-trainer = prepare_trainer(T5Adapter.model,hidden_word_train_dataset,hidden_word_eval_dataset,tokenizer,"hidden-word")
-trainer = train(trainer,hidden_word_train_dataset)
-trainer = eval(trainer,hidden_word_eval_dataset)
+# ## Hidden-word
+# trainer = prepare_trainer(T5Adapter.model,hidden_word_train_dataset,hidden_word_eval_dataset,tokenizer,"hidden-word")
+# trainer = train(trainer,hidden_word_train_dataset)
+# trainer = eval(trainer,hidden_word_eval_dataset)
 
-## Anagram
+## container
 trainer = prepare_trainer(T5Adapter.model,container_train_dataset,container_eval_dataset,tokenizer,"container")
 trainer = train(trainer,container_train_dataset)
 trainer = eval(trainer,container_eval_dataset)
 
-## Anagram
+## reversal
 trainer = prepare_trainer(T5Adapter.model,reversal_train_dataset,reversal_eval_dataset,tokenizer,"reversal")
 trainer = train(trainer,reversal_train_dataset)
 trainer = eval(trainer,reversal_eval_dataset)
 
-## Anagram
+## deletion
 trainer = prepare_trainer(T5Adapter.model,deletion_train_dataset,deletion_eval_dataset,tokenizer,"deletion")
 trainer = train(trainer,deletion_train_dataset)
 trainer = eval(trainer,deletion_eval_dataset)
 
-## Anagram
+## homophone
 trainer = prepare_trainer(T5Adapter.model,homophone_train_dataset,homophone_eval_dataset,tokenizer,"homophone")
 trainer = train(trainer,homophone_train_dataset)
 trainer = eval(trainer,homophone_eval_dataset)
 
-## Anagram
+## double_definition
 trainer = prepare_trainer(T5Adapter.model,double_def_train_dataset,double_def_eval_dataset,tokenizer,"double_definition")
 trainer = train(trainer,double_def_train_dataset)
 trainer = eval(trainer,double_def_eval_dataset)
 
-## Anagram
+## charade
 trainer = prepare_trainer(T5Adapter.model,charade_train_dataset,charade_eval_dataset,tokenizer,"charade")
 trainer = train(trainer,charade_train_dataset)
 trainer = eval(trainer,charade_eval_dataset)
 
-## Anagram
+## unclassified
 trainer = prepare_trainer(T5Adapter.model,unclassified_train_dataset,unclassified_eval_dataset,tokenizer,"unclassified")
 trainer = train(trainer,unclassified_train_dataset)
 trainer = eval(trainer,unclassified_eval_dataset)
