@@ -1,8 +1,8 @@
 from datasets import load_dataset
-from config.configuration import data_file_path, data_file_name, test_size
+from config.configuration import data_file_path, test_size
 from utils.preprocess_data import tokenize_for_adapter, cl_vocab
 
-train_ds = load_dataset("json",data_files = str(data_file_path/data_file_name) , split = 'train')
+train_ds = load_dataset("json",data_files = str(data_file_path/"sample1679170166.779008.jsonl") , split = 'train')
 train_ds = train_ds.map(tokenize_for_adapter,batched= True)
 
 anagram_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("anagram")).train_test_split(test_size=test_size)
