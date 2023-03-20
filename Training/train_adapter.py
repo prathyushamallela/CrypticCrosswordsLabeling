@@ -110,6 +110,6 @@ def eval(trainer,eval_dataset):
 #         trainer = train(trainer,train_dataset)
 #         trainer = eval(trainer,eval_dataset)
 
-trainer = prepare_trainer(T5Adapter,anagram_train_dataset,anagram_eval_dataset,tokenizer,"anagram")
+trainer = prepare_trainer(T5Adapter.model,anagram_train_dataset,anagram_eval_dataset,tokenizer,"anagram")
 trainer = train(trainer,anagram_train_dataset)
 trainer = eval(trainer,anagram_eval_dataset)
