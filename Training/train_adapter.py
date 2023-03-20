@@ -18,7 +18,7 @@ tokenizer = pre_trained_T5Tokenizer(T5_type)
 metric = evaluate.load("accuracy")
 
 # Detecting last checkpoint.
-def get_last_checkpoint():
+def get_checkpoint():
         last_checkpoint = None
         if os.path.isdir(training_arguments.output_dir) and training_arguments.do_train and not training_arguments.overwrite_output_dir:
                 last_checkpoint = get_last_checkpoint(training_arguments.output_dir)
@@ -64,7 +64,7 @@ def prepare_trainer(model,train_dataset,eval_dataset,tokenizer,task_name):
 
 def train(trainer,train_dataset):
         ## Training    
-        last_checkpoint = get_last_checkpoint()
+        last_checkpoint = get_checkpoint()
         checkpoint = None
         if training_arguments.do_train:
                 checkpoint = None
