@@ -11,7 +11,7 @@ container_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.ge
 reversal_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("reversal")).train_test_split(test_size=test_size)
 deletion_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("deletion")).train_test_split(test_size=test_size)
 homophone_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("homophone")).train_test_split(test_size=test_size)
-double_def_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("double-def")).train_test_split(test_size=test_size)
+double_def_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("double_definition")).train_test_split(test_size=test_size)
 charade_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("charade")).train_test_split(test_size=test_size)
 unclassified_dataset = train_ds.filter(lambda example: example["type"]==cl_vocab.get_idx("unclassified")).train_test_split(test_size=test_size)
 
