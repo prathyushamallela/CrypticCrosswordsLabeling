@@ -14,7 +14,6 @@ mock_input = ["translate en to de: This is my data","This is a mock data, I am t
 
 save_file_path = Path.Path().cwd() / 'Model_saveflies'
 data_file_path = Path.Path().cwd() / 'data'
-data_file_name = "sample1679170166.779008.jsonl"
 
 
 adapter_config = PrefixTuningConfig(flat = False, prefix_length = 30)
