@@ -5,7 +5,7 @@ import torch
 
 dev = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-clue_type_classes = ["anagram","hidden-word","container","reversal","deletion","homophone","double-def","charade","unclassified"]
+clue_type_classes = ["anagram","hidden-word","container","reversal","deletion","homophone","double_definition","charade","unclassified"]
 
 #All_T5_types = ['t5-small','t5-base','t5-large','t5-3b','t5-11b']
 T5_type = 't5-small'
