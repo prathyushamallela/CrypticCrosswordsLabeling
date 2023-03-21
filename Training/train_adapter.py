@@ -103,46 +103,55 @@ def eval(trainer,eval_dataset):
         return trainer
 
 ## Anagram
-trainer = prepare_trainer(T5Adapter.model,anagram_train_dataset,anagram_eval_dataset,tokenizer,"anagram")
-trainer = train(trainer,anagram_train_dataset)
-trainer = eval(trainer,anagram_eval_dataset)
+if len(anagram_train_dataset)+ len(anagram_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,anagram_train_dataset,anagram_eval_dataset,tokenizer,"anagram")
+        trainer = train(trainer,anagram_train_dataset)
+        trainer = eval(trainer,anagram_eval_dataset)
 
 ## Hidden-word
-trainer = prepare_trainer(T5Adapter.model,hidden_word_train_dataset,hidden_word_eval_dataset,tokenizer,"hidden-word")
-trainer = train(trainer,hidden_word_train_dataset)
-trainer = eval(trainer,hidden_word_eval_dataset)
+if len(hidden_word_train_dataset)+ len(hidden_word_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,hidden_word_train_dataset,hidden_word_eval_dataset,tokenizer,"hidden-word")
+        trainer = train(trainer,hidden_word_train_dataset)
+        trainer = eval(trainer,hidden_word_eval_dataset)
 
 ## container
-trainer = prepare_trainer(T5Adapter.model,container_train_dataset,container_eval_dataset,tokenizer,"container")
-trainer = train(trainer,container_train_dataset)
-trainer = eval(trainer,container_eval_dataset)
+if len(container_train_dataset)+ len(container_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,container_train_dataset,container_eval_dataset,tokenizer,"container")
+        trainer = train(trainer,container_train_dataset)
+        trainer = eval(trainer,container_eval_dataset)
 
 ## reversal
-trainer = prepare_trainer(T5Adapter.model,reversal_train_dataset,reversal_eval_dataset,tokenizer,"reversal")
-trainer = train(trainer,reversal_train_dataset)
-trainer = eval(trainer,reversal_eval_dataset)
+if len(reversal_train_dataset)+ len(reversal_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,reversal_train_dataset,reversal_eval_dataset,tokenizer,"reversal")
+        trainer = train(trainer,reversal_train_dataset)
+        trainer = eval(trainer,reversal_eval_dataset)
 
 ## deletion
-trainer = prepare_trainer(T5Adapter.model,deletion_train_dataset,deletion_eval_dataset,tokenizer,"deletion")
-trainer = train(trainer,deletion_train_dataset)
-trainer = eval(trainer,deletion_eval_dataset)
+if len(deletion_train_dataset)+ len(deletion_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,deletion_train_dataset,deletion_eval_dataset,tokenizer,"deletion")
+        trainer = train(trainer,deletion_train_dataset)
+        trainer = eval(trainer,deletion_eval_dataset)
 
 ## homophone
-trainer = prepare_trainer(T5Adapter.model,homophone_train_dataset,homophone_eval_dataset,tokenizer,"homophone")
-trainer = train(trainer,homophone_train_dataset)
-trainer = eval(trainer,homophone_eval_dataset)
+if len(homophone_train_dataset)+ len(homophone_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,homophone_train_dataset,homophone_eval_dataset,tokenizer,"homophone")
+        trainer = train(trainer,homophone_train_dataset)
+        trainer = eval(trainer,homophone_eval_dataset)
 
 ## double_definition
-trainer = prepare_trainer(T5Adapter.model,double_def_train_dataset,double_def_eval_dataset,tokenizer,"double_definition")
-trainer = train(trainer,double_def_train_dataset)
-trainer = eval(trainer,double_def_eval_dataset)
+if len(double_def_train_dataset)+ len(double_def_eval_dataset)>0:     
+        trainer = prepare_trainer(T5Adapter.model,double_def_train_dataset,double_def_eval_dataset,tokenizer,"double_definition")
+        trainer = train(trainer,double_def_train_dataset)
+        trainer = eval(trainer,double_def_eval_dataset)
 
 ## charade
-trainer = prepare_trainer(T5Adapter.model,charade_train_dataset,charade_eval_dataset,tokenizer,"charade")
-trainer = train(trainer,charade_train_dataset)
-trainer = eval(trainer,charade_eval_dataset)
+if len(charade_train_dataset)+ len(charade_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,charade_train_dataset,charade_eval_dataset,tokenizer,"charade")
+        trainer = train(trainer,charade_train_dataset)
+        trainer = eval(trainer,charade_eval_dataset)
 
 # unclassified
-trainer = prepare_trainer(T5Adapter.model,unclassified_train_dataset,unclassified_eval_dataset,tokenizer,"unclassified")
-trainer = train(trainer,unclassified_train_dataset)
-trainer = eval(trainer,unclassified_eval_dataset)
+if len(unclassified_train_dataset)+ len(unclassified_eval_dataset)>0:
+        trainer = prepare_trainer(T5Adapter.model,unclassified_train_dataset,unclassified_eval_dataset,tokenizer,"unclassified")
+        trainer = train(trainer,unclassified_train_dataset)
+        trainer = eval(trainer,unclassified_eval_dataset)
