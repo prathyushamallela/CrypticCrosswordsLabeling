@@ -102,15 +102,6 @@ def eval(trainer,eval_dataset):
                 trainer.save_metrics("eval", metrics)
         return trainer
 
-
-# for cl in clue_type_classes:
-#         train_dataset = None
-#         eval_dataset = None
-#         trainer = prepare_trainer(T5Adapter,train_dataset,eval_dataset,tokenizer,cl)
-#         trainer = train(trainer,train_dataset)
-#         trainer = eval(trainer,eval_dataset)
-
-
 ## Anagram
 trainer = prepare_trainer(T5Adapter.model,anagram_train_dataset,anagram_eval_dataset,tokenizer,"anagram")
 trainer = train(trainer,anagram_train_dataset)

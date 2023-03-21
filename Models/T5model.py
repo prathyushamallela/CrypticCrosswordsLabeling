@@ -1,4 +1,4 @@
-from config.configuration import clue_type_classes,T5_type,adapter_config,mock_input
+from config.configuration import adapter_config
 from transformers import T5ForConditionalGeneration, T5Config, T5Tokenizer
 from transformers.adapters import T5AdapterModel
 import torch

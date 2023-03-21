@@ -25,7 +25,7 @@ filepath = save_file_path / 'classifier.pt'
 if not save_file_path.exists():
     os.mkdir(save_file_path)
 if filepath.exists():
-    classifier, optimizer,loss, accuracy,cur_epoch = load_checkpoint(filepath,classifier,None)
+    classifier, optimizer,loss, accuracy,cur_epoch = load_checkpoint(filepath,classifier,optimizer)
 
 for j in range(cur_epoch,epoch):
     ## Training Section
@@ -39,12 +39,12 @@ for j in range(cur_epoch,epoch):
         optimizer.zero_grad()
         y_pred = classifier(data)
         loss = criterion(y_pred,y)
+        loss.backward()
+        optimizer.step()
         y_pred  = torch.argmax(y_pred ,dim = 1, keepdim = True)
         train_total += len(y)
         train_correct += y_pred.eq(y).sum()
-        train_sum_loss += loss.item()
-        loss.backward()
-        optimizer.step()
+        train_sum_loss += loss.item() * len(y)
 
     ## Validation Section
     classifier.eval()
@@ -60,7 +60,7 @@ for j in range(cur_epoch,epoch):
         y_pred  = torch.argmax(y_pred ,dim = 1, keepdim = True)
         val_total += len(y)
         val_correct += y_pred.eq(y).sum()
-        val_sum_loss += loss.item()
+        val_sum_loss += loss.item() * len(y)
 
 
     if accuracy< val_correct/val_total:
