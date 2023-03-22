@@ -25,3 +25,9 @@ def load_solver_model():
     for cl in clue_type_classes:
         model.t5.model.load_adapter(str(save_file_path/cl),config = adapter_config)
     return model
+
+def load_classifier():
+    model = BiLSTMClassifier(T5_type,len(clue_type_classes)).to(dev)
+    checkpoint = torch.load(save_file_path/'classifier.pt',map_location  = dev)
+    model.load_state_dict(checkpoint['model_state_dict'])
+    return model
