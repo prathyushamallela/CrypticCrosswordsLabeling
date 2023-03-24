@@ -22,8 +22,9 @@ def load_solver_model():
     model = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes))).to(dev)
     checkpoint = torch.load(save_file_path/'classifier.pt',map_location  = dev)
     model.classifier.load_state_dict(checkpoint['model_state_dict'])
+    checkpoint_folder = get_last_checkpoint_folder()
     for cl in clue_type_classes:
-        model.t5.model.load_adapter(str(save_file_path/cl),config = adapter_config)
+        model.t5.model.load_adapter(str(save_file_path/checkpoint_folder/cl),config = adapter_config)
     return model
 
 def load_classifier():
@@ -31,3 +32,10 @@ def load_classifier():
     checkpoint = torch.load(save_file_path/'classifier.pt',map_location  = dev)
     model.load_state_dict(checkpoint['model_state_dict'])
     return model
+
+def get_last_checkpoint_folder():
+    num = []
+    for item in  save_file_path.iterdir():
+        if item.is_dir() and 'checkpoint-' in item.name:
+            num.append(int(item.name.replace('checkpoint-','')))
+    return 'checkpoint-'+str(max(num))
