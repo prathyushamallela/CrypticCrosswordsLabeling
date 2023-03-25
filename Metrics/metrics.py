@@ -2,7 +2,7 @@ import sys
 import pathlib
 sys.path.insert(0,str(pathlib.Path().cwd()))
 
-from config.configuration import clue_type_classes, data_file_path, batch_size
+from config.configuration import clue_type_classes, data_file_path, batch_size,dev
 from torch.utils.data import  DataLoader
 from utils.preprocess_data import cl_vocab, tokenize_for_adapter
 from utils.save_load_model import load_solver_model
@@ -76,8 +76,8 @@ def evaluate_model(test_dataset,model, topk):
 		dataloader = DataLoader(dataset,batch_size= batch_size, shuffle= True)
 		if len(dataset):
 			for i, x in enumerate(dataloader):
-				output = model(x['cluename'],topk = topk)
-				answer = x['answer']
+				output = model(x['cluename'].to(dev),topk = topk)
+				answer = x['answer'].to(dev)
 				metric.compute(output,answer,topk)
 	metric.log()
 
