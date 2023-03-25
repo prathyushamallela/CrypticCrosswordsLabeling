@@ -1,4 +1,4 @@
-from config.configuration import adapter_config
+from config.configuration import adapter_config, dev
 from transformers import T5ForConditionalGeneration, T5Config, T5Tokenizer
 from transformers.adapters import T5AdapterModel
 import torch
@@ -94,6 +94,7 @@ class CrypticCrosswordSolver(torch.nn.Module):
 
     def forward(self,x,topk = 1):
         output,attention_mask = self.tokenizer.tokenize(x)
+        output = output.to(dev)
         clue_type = self.classifier(output)
         clue_type  = torch.argmax(clue_type ,dim = 1, keepdim = True)
         clue_type = self.classes.batch_get_class(clue_type)
