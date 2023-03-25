@@ -79,6 +79,6 @@ def evaluate_model(test_dataset,model, topk):
 	metric.log()
 
 model = load_solver_model()
-test_ds = load_dataset("json",data_files = str(data_file_path/"sample1679170166.779008.jsonl") , split = 'train')
+test_ds = load_dataset("json",data_files = str(data_file_path/"cryptonite-test_1679516821.180687.jsonl") , split = 'train')
 test_ds = test_ds.map(tokenize_for_adapter,batched= True)
 evaluate_model(test_ds, model,1)
