@@ -73,8 +73,8 @@ def evaluate_model(test_dataset,model, topk):
 	metric = metrics()
 	for cl in clue_type_classes:
 		dataset = test_dataset.filter(lambda example: example["type"]==cl_vocab.get_idx(cl))
-		dataloader = DataLoader(dataset,batch_size= batch_size, shuffle= True)
 		if len(dataset):
+			dataloader = DataLoader(dataset,batch_size= batch_size, shuffle= True)
 			for i, x in enumerate(dataloader):
 				output = model(x['cluename'],topk = topk)
 				answer = x['answer']
