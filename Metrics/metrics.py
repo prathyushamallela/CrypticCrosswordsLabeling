@@ -2,7 +2,7 @@ import sys
 import pathlib
 sys.path.insert(0,str(pathlib.Path().cwd()))
 
-from config.configuration import clue_type_classes, test_size, data_file_path
+from config.configuration import clue_type_classes, data_file_path, dev
 from utils.preprocess_data import cl_vocab, tokenize_for_adapter
 from utils.save_load_model import load_solver_model
 from datasets import load_dataset
@@ -73,8 +73,8 @@ def evaluate_model(test_dataset,model, topk):
 	for cl in clue_type_classes:
 		dataset = test_dataset.filter(lambda example: example["type"]==cl_vocab.get_idx(cl))
 		if len(dataset):
-			output = model(dataset[:]['cluename'],topk = topk)
-			answer = dataset[:]['answer']
+			output = model(dataset[:]['cluename'],topk = topk).to(dev)
+			answer = dataset[:]['answer'].to(dev)
 			metric.compute(output,answer,topk)
 	metric.log()
 
