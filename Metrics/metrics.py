@@ -73,7 +73,7 @@ def evaluate_model(test_dataset,model, topk):
 	for cl in clue_type_classes:
 		dataset = test_dataset.filter(lambda example: example["type"]==cl_vocab.get_idx(cl))
 		if len(dataset):
-			output = model(dataset[:]['cluename'],topk = topk).to(dev)
+			output = model(dataset[:]['cluename'].to(dev),topk = topk)
 			answer = dataset[:]['answer'].to(dev)
 			metric.compute(output,answer,topk)
 	metric.log()
