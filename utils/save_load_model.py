@@ -19,13 +19,13 @@ def load_checkpoint(filepath,model,optimizer):
     return model,optimizer,loss,accuracy,epoch
 
 def load_solver_model():
-    model = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes))).to(dev)
+    model = CrypticCrosswordSolver(T5_type,clue_type_classes,BiLSTMClassifier(T5_type,len(clue_type_classes)))
     checkpoint = torch.load(save_file_path/'classifier.pt',map_location  = dev)
     model.classifier.load_state_dict(checkpoint['model_state_dict'])
     checkpoint_folder = get_last_checkpoint_folder()
     for cl in clue_type_classes:
         model.t5.model.load_adapter(str(save_file_path/checkpoint_folder/cl),config = adapter_config)
-    return model
+    return model.to(dev)
 
 def load_classifier():
     model = BiLSTMClassifier(T5_type,len(clue_type_classes)).to(dev)
